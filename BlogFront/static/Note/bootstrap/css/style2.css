@@ -1,0 +1,95 @@
+input[type="text"] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  resize: none;
+  outline: none;
+}
+input[type="text"][required]:focus {
+  border-color: #00bafa;
+}
+input[type="text"][required]:focus + label[placeholder]:before {
+  color: #00bafa;
+}
+input[type="text"][required]:focus + label[placeholder]:before,
+input[type="text"][required]:valid + label[placeholder]:before {
+  -webkit-transition-duration: .2s;
+  transition-duration: .2s;
+  -webkit-transform: translate(0, -1.2em) scale(0.9, 1.1);
+  -ms-transform: translate(0, -1.2em) scale(0.9, 1.1);
+  transform: translate(0, -1.2em) scale(1, 1);
+  background-image: linear-gradient(to bottom, #ffffff, #efefef);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#efefef));
+  background-image: -webkit-linear-gradient(top, #ffffff, #efefef);
+}
+input[type="text"][required] + label[placeholder] {
+  display: block;
+  pointer-events: none;
+  line-height: 2.1rem;
+  margin-top: -webkit-calc(-3em - 2px);
+  margin-top: calc(-3em - 2px);
+  margin-bottom: -webkit-calc((3em - 1em) + 2px);
+  margin-bottom: calc((3em - 1em) + 2px);
+}
+input[type="text"][required] + label[placeholder]:before {
+  content: attr(alt);
+  display: inline-block;
+  margin: 0 -webkit-calc(1em + 2px);
+  margin: 0 calc(1em + 2px);
+  padding: 0 2px;
+  color: #898989;
+  white-space: nowrap;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;	
+  -webkit-background-size: 100% 0.1rem;
+  background-size: 100% .1rem;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+/*滚动条样式*/
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+::-webkit-scrollbar  
+{  
+    width: .3rem;  
+/*    height: 5rem;  */
+    background-color: #F5F5F5;  
+}  
+  
+/*定义滚动条轨道 内阴影+圆角*/  
+::-webkit-scrollbar-track  
+{  
+/*
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
+	box-shadow: inset 0 0 .5rem rgba(255,0,0,.3);
+*/
+    border-radius: 10px;  
+    background-color: #F5F5F5;  
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+    border-radius: 10px;
+/*
+    -webkit-box-shadow: inset 0 0 .5rem rgba(255,0,0,.3);
+	box-shadow: inset 0 0 .5rem rgba(255,0,0,.3);
+*/
+    background-color: rgba(229,156,157,.5);  
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

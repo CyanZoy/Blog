@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bootstrap Modal Registration Form Template</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/assets/css/form-elements.css">
+        <link rel="stylesheet" href="/static/assets/css/style.css">
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="../../static/assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="/static/assets/ico/apple-touch-icon-57-precomposed.png">
+        <style>
+            body,html{
+                height: 100%;
+                width: 100%;
+            }
+            .kj{
+                width: 100%;
+                transition: opacity .15s;
+                position: absolute;top: 50%;
+                transform: translate(-50%, -50%);
+                display: inline-block;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <!-- MODAL -->
+        <div style="position: relative;height: 100%;width: 100%">
+            <form action="login?next={{next}}" method="post">
+                <div class="kj" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                </button>
+                                <h3 class="modal-title" id="modal-register-label">登录</h3>
+                                <p>请填写下面的表格</p>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <form role="form" action="" method="post" class="registration-form">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="form-username">用户名</label>
+                                        {{uf.username}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only" for="form-password">密码</label>
+                                        {{uf.password}}
+                                    </div>
+                                    <button type="submit" class="btn">GO!</button>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+
+
+        <!-- Javascript -->
+        <script src="/static/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/assets/js/jquery.backstretch.min.js"></script>
+        <script src="/static/assets/js/scripts.js"></script>
+
+        <!--[if lt IE 10]>
+            <script src="/static/assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+
+</html>

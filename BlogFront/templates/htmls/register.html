@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bootstrap Modal Registration Form Template</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+        <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/assets/css/form-elements.css">
+        <link rel="stylesheet" href="/static/assets/css/style.css">
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="../../static/assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="/static/assets/ico/apple-touch-icon-57-precomposed.png">
+        <style>
+            .input_error{
+                border:solid red 1px !important;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <!-- Content -->
+        <div class="top-content">
+
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                        	<a class="logo" href="register.html"></a>
+                            <h1><strong>Blog</strong> Registration</h1>
+                            <div class="description">
+                            	<p>
+	                            	注册博客账号，开启!
+                            	</p>
+                            </div>
+                            <div class="top-big-link">
+                            	<a class="btn btn-link-1 launch-modal" href="#" data-modal-id="modal-register">注册</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MODAL -->
+        <div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">
+        	<div class="modal-dialog">
+        		<div class="modal-content">
+
+        			<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal">
+        					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        				</button>
+        				<h3 class="modal-title" id="modal-register-label">注册</h3>
+        				<p>请填写下面的表格</p>
+        			</div>
+
+        			<div class="modal-body">
+
+	                    <form role="form" action="register " onsubmit="return f()" method="post" class="registration-form">
+                            <div class="form-group">
+                                <label class="sr-only" for="form-username">用户名</label>
+                                {{uf.username}}
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="form-password">密码</label>
+                                {{uf.password}}
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="form-password-again">密码again</label>
+                                {{uf.password_again}}
+                            </div>
+                            <div class="form-group">
+                                <label style="width: 100%;color: red; font-weight: 100; text-align: center" id="id_error"></label>
+                            </div>
+{#	                    	<div class="form-group">#}
+{#	                    		<label class="sr-only" for="form-first-name">First name</label>#}
+{#	                        	<input type="text" name="form-first-name" placeholder="First name..." class="form-first-name form-control" id="form-first-name">#}
+{#	                        </div>#}
+{#	                        <div class="form-group">#}
+{#	                        	<label class="sr-only" for="form-last-name">Last name</label>#}
+{#	                        	<input type="text" name="form-last-name" placeholder="Last name..." class="form-last-name form-control" id="form-last-name">#}
+{#	                        </div>#}
+{#	                        <div class="form-group">#}
+{#	                        	<label class="sr-only" for="form-email">Email</label>#}
+{#	                        	<input type="text" name="form-email" placeholder="Email..." class="form-email form-control" id="form-email">#}
+{#	                        </div>#}
+{#	                        <div class="form-group">#}
+{#	                        	<label class="sr-only" for="form-about-yourself">About yourself</label>#}
+{#	                        	<textarea name="form-about-yourself" placeholder="About yourself..." #}
+{#	                        				class="form-about-yourself form-control" id="form-about-yourself"></textarea>#}
+{#	                        </div>#}
+	                        <button type="submit" class="btn" onclick="">注册！！！！</button>
+	                    </form>
+
+        			</div>
+
+        		</div>
+        	</div>
+        </div>
+
+
+        <!-- Javascript -->
+        <script src="/static/assets/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/assets/js/jquery.backstretch.min.js"></script>
+        <script src="/static/assets/js/scripts.js"></script>
+
+        <script>
+            var p1 = $('#id_password');
+            var p2 = $('#id_password_again');
+            var n1 = $('#id_username');
+            $(function() {
+                $('#id_password, #id_password_again').focus(function(){
+                    $('#id_error').html('')
+                });
+                $('#id_username').blur(function(){
+                    $.ajax({
+                        url: 'register',
+                        type: 'POST',
+                        data: {"username": n1.val()},
+                        success: function(data){
+                            console.log(data)
+                        }
+                    })
+                })
+            });
+            function f(){
+                if(p1.val() && p2.val() && p1.val() === p2.val()){
+                    return true
+                }else{
+                    var count = 0;
+                    if(!count) {
+                        var p3 = $('#id_error');
+                        timer = setInterval(function () {
+                            p1.addClass("input_error");
+                            p2.addClass("input_error");
+                            p3.html('密码不同');
+                            setTimeout(function(){
+                                p1.removeClass("input_error");
+                                p2.removeClass("input_error");
+                            }, 250);
+                            count ++;
+                            if(count>2)clearInterval(timer)
+                        }, 400)
+                    }
+                    return false
+                }
+            }
+
+
+        </script>
+    </body>
+
+</html>
