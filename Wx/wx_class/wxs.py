@@ -110,9 +110,8 @@ class PullImage:
             'access_token': GA.AccT().acc(),
             'type': 'image'
         }
-        data = {'media': open('code.jpg', 'rb')}
-        r = requests.post(url=self.tem_url.format(p=payload_img), files=data)
-        print(r.url, r.status_code)
+        f = open('timg.jpg', 'rb')
+        r = requests.post(url=self.tem_url.format(p=payload_img), files={'media': f})
         dicts = r.json()
         if 'errcode' in dicts:
             return dicts
