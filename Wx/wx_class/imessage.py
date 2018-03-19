@@ -10,32 +10,30 @@ TEXT_MESSAGE = """<xml>
 <FromUserName><![CDATA[{p[fromUser]}]]></FromUserName>
 <CreateTime>{p[time]}</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[{p[content]}]]></Content>
+<Content><![CDATA[{p[Content]}]]></Content>
 </xml>"""
 
-IMAGE_MESSAGE = """<xml>
-<ToUserName>{p[toUser]}></ToUserName>
-<FromUserName>{p[fromUser]}</FromUserName>
-<CreateTime>{p[time]}</CreateTime>
-<MsgType>image</MsgType>
-<Image>
-<MediaId>{p[media_id]}</MediaId>
-</Image>
-</xml>"""
+# IMAGE_MESSAGE = """<xml>
+# <ToUserName>{p[toUser]}></ToUserName>
+# <FromUserName>{p[fromUser]}</FromUserName>
+# <CreateTime>{p[time]}</CreateTime>
+# <MsgType>image</MsgType>
+# <Image>
+# <MediaId>{p[media_id]}</MediaId>
+# </Image>
+# </xml>"""
+
+
+IMAGE_MESSAGE = """<xml><ToUserName>< ![CDATA[{p[toUser]}] ]></ToUserName><FromUserName>< ![CDATA[{p[fromUser]}] ]></FromUserName><CreateTime>{p[time]}</CreateTime><MsgType>< ![CDATA[image] ]></MsgType><Image><MediaId>< ![CDATA[{p[media_id]}] ]></MediaId></Image></xml>"""
 
 IMAGE_TEXT_MESSAGE = """<xml>
 <ToUserName>{p[toUser]}</ToUserName>
 <FromUserName>{p[fromUser]}</FromUserName>
 <CreateTime>{p[time]}</CreateTime>
 <MsgType>news</MsgType>
-<ArticleCount>1</ArticleCount>
+<ArticleCount>{p[count]}</ArticleCount>
 <Articles>
-<item>
-    <Title>{p[title1]}</Title> 
-    <Description>{p[description1]}</Description>
-    <PicUrl>{p[picurl]}</PicUrl>
-    <Url>{p[url]}</Url>
-</item>
+{p[item]}
 </Articles>
 </xml>"""
 

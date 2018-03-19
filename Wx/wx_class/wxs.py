@@ -4,6 +4,8 @@ import xml.etree.cElementTree as ET
 from Wx.wx_class import imessage, get_access_token as GA, ierror
 import os
 import requests
+from Wx import models
+from spider import fund_spider
 
 
 class SHA1:
@@ -34,65 +36,52 @@ class XMLParse:
     def extract(self, xmltext):
         """提取出xml数据包中的加密消息
         @param xmltext: 待提取的xml字符串
-        @return: 提取出的加密消息字符串
+        @return: 节点与内容的dict
         """
-        try:
-            print(xmltext)
-            xml_tree = ET.fromstring(xmltext)
-            msg_type = xml_tree.find("MsgType").text
-            touser_name = xml_tree.find("ToUserName")
-            fromuser_name = xml_tree.find("FromUserName")
-            con = ''
-            if msg_type == 'text':
-                content = xml_tree.find('Content')
-                con = content
-            elif msg_type == 'image':
-                media_id = xml_tree.find('MediaId')
-                con = media_id
+        xml_tree = ET.fromstring(xmltext)
+        xml_resp = dict()
+        for _ in xml_tree:
+            xml_resp[_.tag] = _.text
 
-            return ierror.WXBizMsgCrypt_OK, msg_type, touser_name.text, fromuser_name.text, con.text
-        except Exception as e:
-            print("wxs->wxtract", e)
-            return ierror.WXBizMsgCrypt_ParseXml_Error, None, None
+        return xml_resp
 
-    def generate(self, touser_name, fromuser_name, timestamp, type, **kwargs):
+    def generate(self, timestamp, **kwargs):
         """生成xml消息
-        @param content: 消息内容
-        @param touser_name: 我
-        @param timestamp: 时间戳
-        @param fromuser_name: 来者
-        @return: 生成的xml字符串
+        :param timestamp: 时间戳
+        :param kwargs:用户发送过来的xml内容
+        :return: 回复消息的xml
         """
+        item = """<item><Title>{p[0]} {p[1]}%</Title> 
+                <Description>{p[1]}</Description>
+                <PicUrl>{p[2]}</PicUrl>
+                <Url>{p[2]}</Url>
+                </item>"""
+        items = ""
+        resp_dict = {'toUser': kwargs['FromUserName'], 'fromUser': kwargs['ToUserName'], 'time': timestamp}
+        filter_key = {'FromUserName', 'CreateTime', 'ToUserName', 'MsgId'}
+        lis = [_ for _ in kwargs if _ not in filter_key]
+        for key in lis:
+            resp_dict[key] = kwargs[key]
 
-        resp_dict = {
-            'toUser': fromuser_name,
-            'fromUser': touser_name,
-            'time': timestamp,
-        }
-        for key in kwargs:
-            if key == 'content':
-                resp_dict[key] = kwargs[key]
-            if key == 'media_id':
-                resp_dict[key] = kwargs[key]
-            if key == 'title1':
-                resp_dict[key] = kwargs[key]
-            if key == 'description1':
-                resp_dict[key] = kwargs[key]
-            if key == 'picurl':
-                resp_dict[key] = kwargs[key]
-            if key == 'url':
-                resp_dict[key] = kwargs[key]
+        if kwargs['MsgType'] == 'text':
+            return imessage.TEXT_MESSAGE.format(p=resp_dict)
+        elif kwargs['MsgType'] == 'image':
+            return imessage.IMAGE_MESSAGE.format(p=resp_dict)
+        elif kwargs['MsgType'] == 'event':
+            code = models.Fund.objects.all().values('fund_code')
+            lis = []
+            for _ in code:
+                lis.append(_['fund_code'])
 
-        resp_xml = ''
+            fund_spider.Grab(lis).get_fund_info()
+            fu = models.Fund.objects.all().values_list('fund_name', 'fund_rise_fall', 'fund_pic_url')
+            resp_dict['count'] = len(fu)
+            for _ in fu:
+                items += item.format(p=_)
+            resp_dict['item'] = items
+            print(resp_dict)
 
-        if type == 'text':
-            resp_xml = imessage.TEXT_MESSAGE.format(p=resp_dict)
-        elif type == 'image':
-            resp_xml = imessage.IMAGE_MESSAGE.format(p=resp_dict)
-        elif type == 'picT':
-            resp_xml = imessage.IMAGE_TEXT_MESSAGE.format(p=resp_dict)
-
-        return resp_xml
+            return imessage.IMAGE_TEXT_MESSAGE.format(p=resp_dict)
 
 
 class PullImage:
@@ -105,16 +94,15 @@ class PullImage:
         上传临时素材接口
         :return:media_id
         """
-        # f = open(self.path+'/images/code.jpg', 'rb')
+        f = open(self.path+'/images/czy.jpg', 'rb')
         payload_img = {
             'access_token': GA.AccT().acc(),
             'type': 'image'
         }
-        f = open('timg.jpg', 'rb')
         r = requests.post(url=self.tem_url.format(p=payload_img), files={'media': f})
         dicts = r.json()
         if 'errcode' in dicts:
-            return dicts
+            return dicts['errcode']
         else:
             return dicts['media_id']
 
@@ -124,11 +112,37 @@ class PullImage:
         """
 
 
+class ManagerMenus:
+    """提供菜单管理接口"""
+    create_url = ' https://api.weixin.qq.com/cgi-bin/menu/create?access_token={}'
+
+    def create(self):
+        tes = """{"button":
+        [
+            {
+                "sub_button":[
+                    {"name":"Blog","type":"view","url":"http://www.cyanzoy.top/myBlog"},
+                    {"name":"基金1","type": "click","key": "V1003_fund"}
+                ],"name":"个人网站","type":null
+            },
+            {
+                "sub_button":[
+                    {"type":"view","name":"余姚公交","url":"http://www.cyanzoy.top:8520"},
+                    {"type":"click","name":"基金","key":"V1001_fund"}
+                ],"name":"菜单","type":null
+            }
+        ]}"""
+
+        r = requests.post(url=self.create_url.format(GA.AccT().acc()), data=tes.encode('utf-8'))
+        print(r.url)
+        print(r.content)
+
+
 if __name__ == "__main__":
 
-    p = PullImage().pull_temporary()
-    print(p)
-
+    # p = PullImage().pull_temporary()
+    # print(p)
+    p = ManagerMenus().create()
 
 
 

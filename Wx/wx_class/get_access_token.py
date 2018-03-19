@@ -69,5 +69,5 @@ class AccT:
 
 if __name__ == "__main__":
     dl = AccT()
-    print(dl.get_acc())
+    print(dl.acc())
 
