@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<title>title</title>
+<!--<link rel="stylesheet" href="Note/bootstrap/css/bootstrap.css">-->
+<link rel="stylesheet" href="Note/bootstrap/css/style.css">
+<link rel="stylesheet" href="Note/bootstrap/css/animate.css">
+<link rel="stylesheet" href="Note/bootstrap/css/publish.css">
+<link rel="stylesheet" href="Note/bootstrap/css/style2.css">
+
+
+<style>
+</style>
+</head>
+<body style="position: static; overflow: visible;">
+<div class="app">
+	<div class="left-container">
+		<div class="left-layout-container pc">
+			<!--左边导航-->
+			<div data-v-007cfd86="" class="user-info"><img data-v-007cfd86="" src="https://www.cyanzoy.top/images-service/touxiang.jpg"> 
+				<div data-v-007cfd86="" class="login-name">CyanZoy</div> 
+				<div data-v-007cfd86="">努力是可以超越天才的</div>
+			</div>
+			<ul data-v-007cfd86="" class="left-menu">
+				<li data-v-007cfd86="" class="selected-menu">个人博客</li> 
+				<li data-v-007cfd86="" class="">关于我</li>
+			</ul>				
+		</div>
+		<div class="navbar">
+			<!--手机顶部导航-->
+			<nav>
+				<a class="return">
+					<i class="icon-directory">
+						<span class="glyphicon glyphicon-user" id="user-icon" style="font-size: .1rem">···</span>
+					</i>
+				</a> 
+			<h1 class="nav_title"><p >CyanZoy</p></h1> 
+			<div class="nav_r">
+				<a href="javascript:;">
+					<i class="icon-search"></i>
+				</a>
+			</div>
+			</nav>
+		</div>	
+		<div class="left-user mobile">
+			<!-- <div class="left-layout-container">
+				<div class="user-info">
+					<img src="https://www.cyanzoy.top/images-service/touxiang.jpg">
+					<div class="login-name">CyanZoyss</div> 
+					<div>努力……</div>
+				</div> 
+				<ul class="left-menu">
+					<li class="router-link-exact-active router-link-active selected-menu">个人博客</li>
+					<li class=""><a href="">关于我</a></li>
+				</ul>
+				<div class="copyright">1099312914@qq.com</div>
+			</div>
+			<div class="left-layout-bg">				
+			</div> -->
+		</div>
+	</div>
+	<div class="blog-container main-container">
+		<!--右部内容-->
+	  	<div class="note-write">
+			<div class="note-write-header">
+				<div class="note-kind">
+					<select name="" id="noteType">
+						<option value="">请选择</option>								
+					</select>
+				</div>
+				<div class="note-kind">
+					<input required type="text" placeholder="标签" id="noteLabel">
+				</div>
+				<div class="note-write-title">
+					<input required type="text" id="noteTitle">
+					<label for="" alt="请输入标题" placeholder="名称"></label>
+				</div>
+			</div>
+			<div class="note-write-words">
+				<div style="position: relative;">
+					<div class="note-write-words-step" contenteditable="true" ></div>
+					<label placeholder="请输入步骤名"></label>
+				</div>
+				<div>
+					<div class="note-write-words-code" contenteditable="true"></div>
+					<label placeholder="相应代码"></label>
+				</div>
+				<div style="position: relative;">
+					<div class="note-write-words-step" contenteditable="true" ></div>
+					<label placeholder="请输入步骤名"></label>
+				</div>
+				<div>
+					<div class="note-write-words-code" contenteditable="true"></div>
+					<label placeholder="相应代码"></label>
+				</div>
+			</div>
+			<div class="moreDiv">
+				<div class="opt-box row unfull">
+					<label class="labTitle col-form-label"></label>
+					<div class="txt-box">
+						<input id="btnPublish" type="button" class="btn btn-outline-danger" value="发布博客" title="发布博客">
+<!--
+						<input id="btnDraft" type="button" class="btn btn-outline-danger ml-24 btn-baocun" value="保存草稿" title="保存文章并留在当前页">
+						<input id="btnCancel" type="button" class="btn btn-outline-secondary ml-24 btn-shanchu" title="返回列表页" value="返回">
+-->
+					</div>
+				</div>
+			</div>
+		</div>	  		  	
+	  	
+	</div>
+	<!--右部内容over-->	
+</div>
+
+<script src="Note/bootstrap/js/jquery-3.2.1.min.js"></script>
+<!--<script src="bootstrap/js/bootstrap.min.js"></script>-->
+<script>
+var homeUrl = ""
+//获取项目路径
+$(function(){
+	var pathName = window.document.location.pathname;
+	homeUrl = pathName.substr(0, pathName.substring(1).indexOf('/')+1)
+})
+</script>
+<script>
+	$(function(){
+		$("#test").click(function(){
+			$(".blog-detail-container").css("display", "block");
+			$(".blog-list-container").remove()			
+		})
+		var mobile_info = '<div class="left-layout-container animated fadeInLeft" style="display:block">'+
+							'<div class="user-info">'+
+								'<img src="https://www.cyanzoy.top/images-service/touxiang.jpg">'+
+								'<div class="login-name">CyanZoy</div> '+
+								'<div>努力……</div>'+
+							'</div> '+
+							'<ul class="left-menu">'+
+								'<li class="router-link-exact-active router-link-active selected-menu">个人博客</li>'+
+								'<li class=""><a href="">关于我</a></li>'+
+							'</ul>'+
+							'<div class="copyright">1099312914@qq.com</div>'+
+						'</div>'+
+						'<div class="left-layout-bg">'+
+						'</div>';
+		$(".icon-directory").click(function(){
+			$(".mobile").append(mobile_info);
+		})
+		$('.mobile .left-layout-container, .icon-directory').click(function (event) {  
+			event.stopPropagation();
+			return false;
+		});  
+		$(document).click(function(event){
+			if (!$(".mobile .left-layout-container").hasClass('fadeInLeft')){
+				return;
+			}
+			var _con = $('.mobile .left-layout-container');   // 设置目标区域
+			if(!_con.is(event.target) && _con.has(event.target).length === 0){				  
+				$(".mobile .left-layout-container").removeClass('animated fadeInLeft');
+				$(".mobile .left-layout-container").addClass('animated slideOutLeft');
+//				$(".mobile .left-layout-bg").addClass('animated fadeOut')
+				setTimeout(function(){
+					$(".mobile").children().remove();
+				},1000)	
+			}
+		});
+		var selected = $(".left-menu li.selected-menu");
+		$(".left-menu li").mouseover(function(){
+			var se = $(".left-menu li.selected-menu");
+			$(se).removeClass("selected-menu");
+			$(this).addClass("selected-menu");
+		})
+		$(".left-menu li").mouseout(function(){
+			$(this).removeClass("selected-menu");
+			$(selected).addClass("selected-menu");
+		});		
+	})
+</script>
+<script>
+	$(function(){
+		$.ajax({
+			url:homeUrl+"/note/list.do",
+			type:'GET',
+			dataType:'json',
+			success:function(data){
+				for(i=0; i<data.length; i++){
+					produceList(data[i].noteId, data[i].noteTitle, data[i].noteLabel, data[i].noteTime)
+				}
+			}
+		})
+	})	
+	function produceList(id, title, label, time){
+		var a = '<li class="issue-item">'+
+				'<a href="'+id+'" class=""> '+title+' </a>'+ 
+				'<ul><li class="tag tag-small" style="background-color: rgb(14, 138, 22);">'+label+'</li></ul>'+
+			 	'<span class="time"> '+time+' </span>'+
+		 		'</li>';
+		$(".issue-list").append(a);
+	}
+</script>
+<!--
+<script>
+	$(function(){		
+		var mobile_info = '<div class="animated fadeInLeft">'+
+							'<div class="user-info">'+
+								'<img src="https://www.cyanzoy.top/images-service/touxiang.jpg">'+
+								'<div class="login-name">CyanZoy</div> '+
+								'<div>努力……</div>'+
+							'</div> '+
+							'<ul class="left-menu">'+
+								'<li class="router-link-exact-active router-link-active selected-menu">个人博客</li>'+
+								'<li class=""><a href="">关于我</a></li>'+
+							'</ul>'+
+							'<div class="copyright">1099312914@qq.com</div>'+
+						'</div>'+
+						'<div class="left-layout-bg">'+
+						'</div>';
+		$(".icon-directory").click(function(){
+			$(".mobile").append(mobile_info);
+		})
+		$('.mobile .left-layout-container, .icon-directory').click(function (event) {  
+			event.stopPropagation();
+			return false;
+		});  
+		$(document).click(function(event){
+			if (!$(".mobile .left-layout-container").hasClass('fadeInLeft')){
+				return;
+			}
+			var _con = $('.mobile .left-layout-container');   // 设置目标区域
+			if(!_con.is(event.target) && _con.has(event.target).length === 0){				  
+				$(".mobile .left-layout-container").removeClass('animated fadeInLeft');
+				$(".mobile .left-layout-container").addClass('animated slideOutLeft');
+				$(".mobile .left-layout-bg").addClass('animated fadeOut')
+				setTimeout(function(){
+					$(".mobile").children().remove();
+				},1000)		
+			}
+		});
+		var selected = $(".left-menu li.selected-menu");
+		$(".left-menu li").mouseover(function(){
+			var se = $(".left-menu li.selected-menu");
+			$(se).removeClass("selected-menu");
+			$(this).addClass("selected-menu");
+		})
+		$(".left-menu li").mouseout(function(){
+			$(this).removeClass("selected-menu");
+			$(selected).addClass("selected-menu");
+		});		
+	})
+</script>
+-->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
