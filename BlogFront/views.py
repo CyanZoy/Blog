@@ -97,19 +97,23 @@ def register(request):
 from BlogFront.interface.note_model import *
 @login_required
 def note(request):
-    notename = request.GET.get('spm').lower()
-    allname = ModelGet.note_get_name()
-    # 如果没有笔记名参数则默认查询全部
-    if not notename:
-        allnote = ModelGet.note_get_t()
-        context = Change.queryset_to_dic((allnote, allname), one='note', two='name')
+    if not request.is_ajax():
+        notename = request.GET.get('spm').lower()
+        allname = ModelGet.note_get_name()
+        # 如果没有笔记名参数则默认查询全部
+        if not notename:
+            allnote = ModelGet.note_get_t()
+            context = Change.queryset_to_dic((allnote, allname), one='note', two='name')
+            return render(request, 'htmls/note.html', context=context)
+        result = ModelGet.note_get_t(notename)
+        # 查询没结果则重定向至note
+        if not result:
+            return HttpResponseRedirect('/note')
+        # 查询对应笔记
+        context = Change.queryset_to_dic((result, allname), one='note', two='name')
         return render(request, 'htmls/note.html', context=context)
-    result = ModelGet.note_get_t(notename)
-    # 查询没结果则重定向至note
-    if not result:
-        return HttpResponseRedirect('/note')
-    # 查询对应笔记
-    context = Change.queryset_to_dic((result, allname), one='note', two='name')
-    return render(request, 'htmls/note.html', context=context)
-
-
+    else:
+        # spm = notename = request.GET.get('spm').lower()
+        note_num = request.GET.get('id')
+        print(note_num)
+        return HttpResponse('success')

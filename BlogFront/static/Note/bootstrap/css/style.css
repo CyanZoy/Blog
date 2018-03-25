@@ -479,7 +479,7 @@ a {
     display: flex;
     align-items: center;
     background-color: #f9fafc;
-    padding: 0 .8rem;
+    padding: .5rem .8rem;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
 }
@@ -489,7 +489,7 @@ a {
     padding: 0 .1rem;
 }
 .title-container .title {
-    font-size: 22px;
+    font-size: 14px;
     color: #4b595f;
     white-space: nowrap;
     overflow: hidden;

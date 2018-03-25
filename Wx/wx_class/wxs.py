@@ -6,7 +6,7 @@ import os
 import requests
 from Wx import models
 from spider import fund_spider
-
+from collections import defaultdict
 
 class SHA1:
     """计算公众平台的消息签名接口"""
@@ -51,7 +51,7 @@ class XMLParse:
         :param kwargs:用户发送过来的xml内容
         :return: 回复消息的xml
         """
-        item = """<item><Title>{p[0]} {p[1]}%</Title> 
+        item = """<item><Title>{p[0]} {p[1]}% \n{m:.2f}</Title> 
                 <Description>{p[1]}</Description>
                 <PicUrl>{p[2]}</PicUrl>
                 <Url>{p[2]}</Url>
@@ -67,19 +67,25 @@ class XMLParse:
             return imessage.TEXT_MESSAGE.format(p=resp_dict)
         elif kwargs['MsgType'] == 'image':
             return imessage.IMAGE_MESSAGE.format(p=resp_dict)
-        elif kwargs['MsgType'] == 'event':
-            code = models.Fund.objects.all().values('fund_code')
+        # 基金click
+        elif kwargs['MsgType'] == 'event' and kwargs['EventKey'] == 'V1001_fund':
+            assig = models.Fund.objects.all().values('fund_code', 'fund_invest')
             lis = []
-            for _ in code:
-                lis.append(_['fund_code'])
-
+            for ke in assig:
+                lis.append(ke['fund_code'])
             fund_spider.Grab(lis).get_fund_info()
-            fu = models.Fund.objects.all().values_list('fund_name', 'fund_rise_fall', 'fund_pic_url')
-            resp_dict['count'] = len(fu)
-            for _ in fu:
-                items += item.format(p=_)
+            fu = models.Fund.objects.all().values_list('fund_name', 'fund_rise_fall', 'fund_pic_url', 'fund_invest')
+            d = defaultdict(list)
+            for _ in enumerate(fu):
+                d[str(_[0])].append(fu[_[0]])
+
+            resp_dict['count'] = len(d)
+
+            for _ in d.values():
+                items += item.format(p=_[0], m=_[0][3]*_[0][1]/100)
+
             resp_dict['item'] = items
-            print(resp_dict)
+            # print(resp_dict)
 
             return imessage.IMAGE_TEXT_MESSAGE.format(p=resp_dict)
 
@@ -120,14 +126,18 @@ class ManagerMenus:
         tes = """{"button":
         [
             {
-                "sub_button":[
-                    {"name":"Blog","type":"view","url":"http://www.cyanzoy.top/myBlog"},
-                    {"name":"基金1","type": "click","key": "V1003_fund"}
-                ],"name":"个人网站","type":null
+                "name":"登录",
+                "type":"view",
+                "url": "http://blog.cyanzoy.top"
             },
             {
                 "sub_button":[
-                    {"type":"view","name":"余姚公交","url":"http://www.cyanzoy.top:8520"},
+                    {"name":"Blog","type":"view","url":"http://www.cyanzoy.top/myBlog"},
+                    {"type":"view","name":"余姚公交","url":"http://www.cyanzoy.top:8520"}                    
+                ],"name":"个人网站","type":null
+            },
+            {
+                "sub_button":[                    
                     {"type":"click","name":"基金","key":"V1001_fund"}
                 ],"name":"菜单","type":null
             }

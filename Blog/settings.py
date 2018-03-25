@@ -26,7 +26,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'BlogFront',
-    'Wx'
+    'Wx',
+    # 'werkzeug_debugger_runserver',
+    # 'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -38,6 +40,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# SECURE_REQUIRED_PATHS = (
+#     '/admin',
+# )
 
 ROOT_URLCONF = 'Blog.urls'
 
@@ -67,11 +73,24 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog',
+        'USER': 'shawjean',
+        'PASSWORD': '13486059134',
+        'HOST': '118.25.49.96',
+        'PORT': '3306'
+    },
+    'db_note': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'blog',
         'USER': 'root',
         'PASSWORD': '1996Chan',
         'HOST': 'localhost',
         'PORT': '3306'
     }
+}
+DATABASE_ROUTERS = ['Blog.database_router.DatabaseAppsRouter']
+DATABASE_APPS_MAPPING = {
+    # 'Wx': 'default',
+    'BlogFront': 'db_note'
 }
 
 
@@ -109,6 +128,8 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
+
+STATIC_ROOT = BASE_DIR+'/static'
 
 STATICFILES_DIRS = [
     'BlogFront/static/',

@@ -81,7 +81,7 @@
 		 <div class="blog-detail-container" style="display: none">
 	  		<!--详情页-->
 		  <div class="title-container">
-			<span class="title">Python-scrapy安装报错No module named _sqlite3</span>
+			<span class="title" id="title">Python-scrapy安装报错No module named _sqlite3</span>
 			<ul>
 			 <li class="tag tag-small" style="background-color: rgb(194, 224, 198);">webpack </li>
 			</ul> 
@@ -92,9 +92,9 @@
 			 <div class="comment-title">
 			 <div>
 			  <img src="https://www.cyanzoy.top/images-service/touxiang.jpg"/> 
-			  <span>Moonlightg</span>
+			  <span>CyanZoy</span>
 			 </div> 
-			 <span class="time">2018-01-09 11:58</span>
+			 <span class="time" id="time">2018-01-09 11:58</span>
 			 </div> 
 			 <article class="comment-body markdown-body">
 				<h3>解决No module named _sqlite3的问题</h3>
@@ -124,7 +124,7 @@
             {% for i in note %}
                 <li class="issue-item"><a href="javascript:void(0)" class="" id="{{ i.note_num }}"> {{ i.note_title }} </a>
                     <ul><li class="tag tag-small" style="background-color: rgb(14, 138, 22);">{{ i.note_label }}</li></ul>
-                    <span class="time"> {{ i.creat_time }} </span>
+                    <span class="time {{ i.note_num }}"> {{ i.creat_time }} </span>
                 </li>
             {% endfor %}
 		</ul>
@@ -147,13 +147,39 @@
 
 <script src="/static/Note/bootstrap/js/jquery-3.2.1.min.js"></script>
 <!--<script src="bootstrap/js/bootstrap.min.js"></script>-->
+{#<script>#}
+{#var homeUrl = ""#}
+{#//获取项目路径#}
+{#$(function(){#}
+{#	var pathName = window.document.location.pathname;#}
+{#	homeUrl = pathName.substr(0, pathName.substring(1).indexOf('/')+1)#}
+{#{)#}
+{#</script>#}
 <script>
-var homeUrl = ""
-//获取项目路径
-$(function(){
-	var pathName = window.document.location.pathname;
-	homeUrl = pathName.substr(0, pathName.substring(1).indexOf('/')+1)
-})
+    $('.back').click(function(){
+        $(".blog-detail-container").css("display", "none");
+        $(".blog-list-container").css('display', 'flex');
+    });
+    {#详情页#}
+    var info = $('.blog-detail-container');
+    $('.issue-item a').click(function(){
+        console.log($(this).attr('id'));
+        $('#title').html($(this).html());
+        var id = $(this).attr('id');
+        $("#time").html($("."+id+"").html());
+        get_info(id);
+        $(".blog-detail-container").css("display", "block");
+        $(".blog-list-container").css('display', 'none');
+    });
+    function get_info(note_num){
+        $.ajax({
+            url:'/note?id='+note_num+'',
+            type:'GET',
+            success:function(data){
+                console.log(data)
+            }
+        })
+    }
 </script>
 <script>
 	$(function(){
@@ -211,26 +237,19 @@ $(function(){
 	})
 </script>
 <script>
-	$(function(){
-		$.ajax({
-			url:homeUrl+"http://www.cyanzoy.top/myBlog/shiro/note/list.do",
-			type:'GET',
-			dataType:'json',
-			success:function(data){
-				for(i=0; i<data.length; i++){
-					produceList(data[i].noteId, data[i].noteTitle, data[i].noteLabel, data[i].noteTime)
-				}
-			}
-		})
-	});
-	function produceList(id, title, label, time){
-		var a = '<li class="issue-item">'+
-				'<a href="'+id+'" class=""> '+title+' </a>'+ 
-				'<ul><li class="tag tag-small" style="background-color: rgb(14, 138, 22);">'+label+'</li></ul>'+
-			 	'<span class="time"> '+time+' </span>'+
-		 		'</li>';
-		$(".issue-list").append(a);
-	}
+{#	$(function(){#}
+{#		$.ajax({#}
+{#			url:homeUrl+"http://www.cyanzoy.top/myBlog/shiro/note/list.do",#}
+{#			type:'GET',#}
+{#			dataType:'json',#}
+{#			success:function(data){#}
+{#				for(i=0; i<data.length; i++){#}
+{#					produceList(data[i].noteId, data[i].noteTitle, data[i].noteLabel, data[i].noteTime)#}
+{#				}#}
+{#			}#}
+{#		})#}
+{#	});#}
+{#	#}
 </script>
 </body>
 </html>

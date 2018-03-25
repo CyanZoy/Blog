@@ -13,16 +13,6 @@ TEXT_MESSAGE = """<xml>
 <Content><![CDATA[{p[Content]}]]></Content>
 </xml>"""
 
-# IMAGE_MESSAGE = """<xml>
-# <ToUserName>{p[toUser]}></ToUserName>
-# <FromUserName>{p[fromUser]}</FromUserName>
-# <CreateTime>{p[time]}</CreateTime>
-# <MsgType>image</MsgType>
-# <Image>
-# <MediaId>{p[media_id]}</MediaId>
-# </Image>
-# </xml>"""
-
 
 IMAGE_MESSAGE = """<xml><ToUserName>< ![CDATA[{p[toUser]}] ]></ToUserName><FromUserName>< ![CDATA[{p[fromUser]}] ]></FromUserName><CreateTime>{p[time]}</CreateTime><MsgType>< ![CDATA[image] ]></MsgType><Image><MediaId>< ![CDATA[{p[media_id]}] ]></MediaId></Image></xml>"""
 

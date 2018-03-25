@@ -22,15 +22,15 @@ def wx_authentication(request):
 
 
 def autoreply(request):
-    try:
-        web_data = request.body
-        xml_resp = wxs.XMLParse().extract(web_data)
-
-        resp_xml = wxs.XMLParse().generate(int(time.time()), **xml_resp)
-        # print(resp_xml, '-'*5)
-        return HttpResponse(resp_xml)
-    except:
-        print("view中error")
+    # try:
+    web_data = request.body
+    xml_resp = wxs.XMLParse().extract(web_data)
+    print(xml_resp)
+    resp_xml = wxs.XMLParse().generate(int(time.time()), **xml_resp)
+    # print(resp_xml, '-'*5)
+    return HttpResponse(resp_xml)
+    # except:
+    #     print("view中error")
 
 
 

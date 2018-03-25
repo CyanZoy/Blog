@@ -40,6 +40,6 @@ class Fund(models.Model):
 
     class Meta:
         verbose_name = '基金'
-        db_table = 'wx_Fund'
+        db_table = 'wx_fund'
         verbose_name_plural = '基金'
 
