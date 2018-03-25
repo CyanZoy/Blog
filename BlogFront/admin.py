@@ -1,3 +1,9 @@
 from django.contrib import admin
+from BlogFront.models import NoteName
 
-# Register your models here.
+
+class NoteNameAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'creat_time']
+
+
+admin.site.register(NoteName, NoteNameAdmin)

@@ -4,6 +4,7 @@ from django.contrib.auth import (login, logout, authenticate,)
 from django import forms
 from django.contrib.auth.decorators import login_required
 import json
+from collections import defaultdict
 
 
 class UserRegisterFrom(forms.Form):
@@ -20,6 +21,7 @@ class UserRegisterFrom(forms.Form):
                                widget=forms.TextInput(attrs={'placeholder': '请再次输入密码', 'name': 'form_password_again',
                                                              'class': 'form-first-name form-control',
                                                              'type': 'password'}))
+
 
 class UserLoginFrom(forms.Form):
     username = forms.CharField()
@@ -49,7 +51,7 @@ def login_process(request):
                 login(request, user)
                 request.session['username'] = username
                 response = HttpResponseRedirect(__next_web)
-                request.session.set_expiry(60)
+                request.session.set_expiry(60*15)
                 return response
             else:
                 return HttpResponseRedirect('/login')
@@ -92,8 +94,22 @@ def register(request):
         return render(request, 'htmls/register.html', context)
 
 
+from BlogFront.interface.note_model import *
 @login_required
 def note(request):
-    return render(request, 'htmls/note.html')
+    notename = request.GET.get('spm').lower()
+    allname = ModelGet.note_get_name()
+    # 如果没有笔记名参数则默认查询全部
+    if not notename:
+        allnote = ModelGet.note_get_t()
+        context = Change.queryset_to_dic((allnote, allname), one='note', two='name')
+        return render(request, 'htmls/note.html', context=context)
+    result = ModelGet.note_get_t(notename)
+    # 查询没结果则重定向至note
+    if not result:
+        return HttpResponseRedirect('/note')
+    # 查询对应笔记
+    context = Change.queryset_to_dic((result, allname), one='note', two='name')
+    return render(request, 'htmls/note.html', context=context)
 
 

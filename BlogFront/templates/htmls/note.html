@@ -10,6 +10,9 @@
 <link rel="stylesheet" href="/static/Note/bootstrap/css/animate.css">
 
 <style>
+    pre{
+        margin-top: .5rem;
+    }
 </style>
 </head>
 <body style="position: static; overflow: visible;">
@@ -66,13 +69,14 @@
 			</div> -->
 		</div>
 	</div>
-	<div class="blog-container main-container">
+	<div class="blog-container main-container" style="background-color: white">
 		<!--右部内容-->
 	  <ul class="label-list">
-			<li><span class="tag" style="background-color: rgb(53, 147, 242);">ALL</span></li> 
-			<li><span class="tag tag-unchecked">Python</span></li>
-			<li><span class="tag tag-unchecked">Scrapy</span></li>
-			<li><span class="tag tag-unchecked">Spider</span></li>			
+			<li><span class="tag" style="background-color: rgb(53, 147, 242);"><a href="/note">ALL</a></span></li>
+			{% for i in name %}
+                <li><span class="tag tag-unchecked"><a href="/note?spm={{ i.name }}">{{ i.name }}</a></span></li>
+            {% endfor %}
+
 	  </ul>
 		 <div class="blog-detail-container" style="display: none">
 	  		<!--详情页-->
@@ -98,6 +102,12 @@
 				<pre><code>1，首先安装 sqlite-devel<br>yum install sqlite-devel<br>2，重新编译安装Python<br>./configure --prefix=/usr/local/python/python3<br>make<br>make install</code>
 				</pre> 
 			 </article>
+            <article class="comment-body markdown-body">
+                <h3>解决No module named _sqlite3的问题</h3>
+                <h3>出错源头：使用scrapy bench 测试命令时报错</h3>
+                <pre><code>1，首先安装 sqlite-devel<br>yum install sqlite-devel<br>2，重新编译安装Python<br>./configure --prefix=/usr/local/python/python3<br>make<br>make install</code>
+                </pre>
+            </article>
 			</div> 			
 		  </div>
 		 </div> 
@@ -110,8 +120,15 @@
 		 <li class="issue-item"><a href="javascript:void(0)" class="" id="test"> Python-scrapy安装报错No module named _sqlite3 </a> 
 			 <ul><li class="tag tag-small" style="background-color: rgb(14, 138, 22);">Scrapy</li></ul> 
 			 <span class="time"> 2017-12-28 11:44 </span>
-		 </li>		 
-		</ul> 
+		 </li>
+            {% for i in note %}
+                <li class="issue-item"><a href="javascript:void(0)" class="" id="{{ i.note_num }}"> {{ i.note_title }} </a>
+                    <ul><li class="tag tag-small" style="background-color: rgb(14, 138, 22);">{{ i.note_label }}</li></ul>
+                    <span class="time"> {{ i.creat_time }} </span>
+                </li>
+            {% endfor %}
+		</ul>
+
 		
 		<div class="bottom-bar">
 			<input type="text" placeholder="按文章标题或内容搜索..." class="fl query" /> 
@@ -166,13 +183,14 @@ $(function(){
 			return false;
 		});  
 		$(document).click(function(event){
-			if (!$(".mobile .left-layout-container").hasClass('fadeInLeft')){
+		    var a = $(".mobile .left-layout-container");
+			if (!a.hasClass('fadeInLeft')){
 				return;
 			}
-			var _con = $('.mobile .left-layout-container');   // 设置目标区域
+			var _con = a;   // 设置目标区域
 			if(!_con.is(event.target) && _con.has(event.target).length === 0){				  
-				$(".mobile .left-layout-container").removeClass('animated fadeInLeft');
-				$(".mobile .left-layout-container").addClass('animated slideOutLeft');
+				a.removeClass('animated fadeInLeft');
+				a.addClass('animated slideOutLeft');
 				$(".mobile .left-layout-bg").addClass('animated fadeOut')
 				setTimeout(function(){
 					$(".mobile").children().remove();
@@ -180,12 +198,13 @@ $(function(){
 			}
 		});
 		var selected = $(".left-menu li.selected-menu");
-		$(".left-menu li").mouseover(function(){
-			var se = $(".left-menu li.selected-menu");
-			$(se).removeClass("selected-menu");
+		var se = $(".left-menu li");
+		se.mouseover(function(){
+{#			var se = $(".left-menu li.selected-menu");#}
+			$(selected).removeClass("selected-menu");
 			$(this).addClass("selected-menu");
-		})
-		$(".left-menu li").mouseout(function(){
+		});
+		se.mouseout(function(){
 			$(this).removeClass("selected-menu");
 			$(selected).addClass("selected-menu");
 		});		
@@ -194,7 +213,7 @@ $(function(){
 <script>
 	$(function(){
 		$.ajax({
-			url:homeUrl+"/note/list.do",
+			url:homeUrl+"http://www.cyanzoy.top/myBlog/shiro/note/list.do",
 			type:'GET',
 			dataType:'json',
 			success:function(data){
